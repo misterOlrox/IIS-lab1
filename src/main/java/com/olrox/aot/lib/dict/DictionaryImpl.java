@@ -46,7 +46,7 @@ public class DictionaryImpl implements Dictionary {
         return entireMap
                 .values()
                 .stream()
-                .sorted((w1, w2) -> (int) (w2.getFrequency() - w1.getFrequency()))
+                .sorted(Comparator.comparingLong(Word::getFrequency).reversed())
                 .collect(Collectors.toList());
     }
 
