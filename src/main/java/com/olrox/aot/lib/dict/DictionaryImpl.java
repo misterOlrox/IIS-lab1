@@ -3,20 +3,16 @@ package com.olrox.aot.lib.dict;
 import com.olrox.aot.lib.word.EnglishWord;
 import com.olrox.aot.lib.word.Word;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class DictionaryImpl implements Dictionary {
 
     private long wordUsageCounter = 0;
     private Map<String, Word> entireMap = new HashMap<>();
-    private NavigableSet<Word> alphabeticallySorted = new TreeSet<>(Comparator.comparing(Word::getValue));
 
     @Override
     public void addWord(String word) {
@@ -25,20 +21,30 @@ public class DictionaryImpl implements Dictionary {
         if (existingWord == null) {
             Word newWord = new EnglishWord(word);
             entireMap.put(word, newWord);
-            alphabeticallySorted.add(newWord);
         } else {
             existingWord.incrementFrequency();
         }
     }
 
     @Override
-    public void addWords(List<String> words) {
-        words.forEach(this::addWord);
+    public Word editWord(String oldValue, String newValue) {
+        Word oldWord = entireMap.get(oldValue);
+        Word newWord = entireMap.get(newValue);
+        if (newWord == null) {
+            entireMap.remove(oldValue);
+            oldWord.setValue(newValue);
+            entireMap.put(newValue, oldWord);
+        } else {
+            entireMap.remove(oldValue);
+            newWord.incrementFrequency(oldWord.getFrequency());
+        }
+
+        return newWord;
     }
 
     @Override
-    public List<Word> getSortedByAlphabet() {
-        return new ArrayList<>(alphabeticallySorted);
+    public void addWords(List<String> words) {
+        words.forEach(this::addWord);
     }
 
     @Override
@@ -58,5 +64,10 @@ public class DictionaryImpl implements Dictionary {
     @Override
     public long getWordsInDictionary() {
         return entireMap.size();
+    }
+
+    @Override
+    public void deleteWord(String word) {
+        entireMap.remove(word);
     }
 }

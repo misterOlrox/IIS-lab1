@@ -14,6 +14,11 @@ public class EnglishWord implements Word {
     }
 
     @Override
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
     public long getFrequency() {
         return frequency;
     }
@@ -21,5 +26,10 @@ public class EnglishWord implements Word {
     @Override
     public void incrementFrequency() {
         ++frequency;
+    }
+
+    @Override
+    public void incrementFrequency(long i) {
+        frequency += i;
     }
 }

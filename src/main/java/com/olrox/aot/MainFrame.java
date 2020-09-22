@@ -1,37 +1,37 @@
 package com.olrox.aot;
 
-import com.olrox.aot.layout.JMenuBarFactory;
-import com.olrox.aot.layout.model.WordModel;
+import com.olrox.aot.layout.factory.JMenuBarFactory;
+import com.olrox.aot.layout.model.WordTableModel;
 import com.olrox.aot.lib.dict.Dictionary;
 import com.olrox.aot.lib.dict.DictionaryImpl;
+import com.olrox.aot.lib.word.Word;
 import com.olrox.aot.text.TextReader;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainFrame extends JFrame {
 
     private Dictionary dictionary = new DictionaryImpl();
+    private List<Word> showedWords = new ArrayList<>();
     private TextReader textReader = new TextReader();
 
-    private DefaultListModel<WordModel> listModel = new DefaultListModel<>();
     private JPanel rootPanel;
-    private JList<WordModel> list1;
-    private JTextField wordsUsageCounter;
-    private JTextField wordsInDictionaryCounter;
-    private JButton alphabetSortButton;
-    private JButton frequencySortButton;
+    private JTable wordTable;
+    private JTextField findWordField;
+    private WordTableModel wordTableModel = new WordTableModel(showedWords, dictionary);
 
     public MainFrame() {
         super("MyPaint");
@@ -44,10 +44,24 @@ public class MainFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
-        alphabetSortButton.addActionListener(x -> this.showDictionary());
-        frequencySortButton.addActionListener(x -> this.showDictionarySortedByFrequency());
+        findWordField.addActionListener((actionEvent) -> {
+            wordTableModel.setFilter(findWordField.getText());
+        });
 
-        list1.setModel(listModel);
+        wordTable.setModel(wordTableModel);
+        wordTable.setAutoCreateRowSorter(true);
+        wordTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                var dialog = new EditWordDialog(
+                        wordTableModel,
+                        wordTable.convertRowIndexToModel(wordTable.getSelectedRow()),
+                        wordTable.convertColumnIndexToModel(wordTable.getSelectedColumn())
+                );
+                dialog.setVisible(true);
+                super.mouseClicked(e);
+            }
+        });
         readText(Paths.get("./src/main/resources/text1.txt").toFile());
         readText(Paths.get("./src/main/resources/text2.txt").toFile());
         readText(Paths.get("./src/main/resources/text3.txt").toFile());
@@ -66,36 +80,7 @@ public class MainFrame extends JFrame {
 
     public void readText(File file) {
         dictionary.addWords(textReader.readFile(file));
-        showDictionary();
+        wordTableModel.fireTableDataChanged();
     }
 
-    public void showDictionary() {
-        listModel.removeAllElements();
-        listModel.addAll(
-                dictionary
-                        .getSortedByAlphabet()
-                        .stream()
-                        .map(WordModel::new)
-                        .collect(Collectors.toList())
-        );
-        wordsUsageCounter.setText(String.valueOf(dictionary.getWordUsageCounter()));
-        wordsInDictionaryCounter.setText(String.valueOf(dictionary.getWordsInDictionary()));
-    }
-
-    public void showDictionarySortedByFrequency() {
-        listModel.removeAllElements();
-        listModel.addAll(
-                dictionary
-                        .getSortedByFrequency()
-                        .stream()
-                        .map(WordModel::new)
-                        .collect(Collectors.toList())
-        );
-        wordsUsageCounter.setText(String.valueOf(dictionary.getWordUsageCounter()));
-        wordsInDictionaryCounter.setText(String.valueOf(dictionary.getWordsInDictionary()));
-    }
-
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
 }
