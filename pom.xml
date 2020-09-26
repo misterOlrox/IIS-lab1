@@ -8,6 +8,21 @@
     <artifactId>AOT</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.github.vincenzopalazzo</groupId>
+            <artifactId>material-ui-swing</artifactId>
+            <version>1.1.2-rc1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.4</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

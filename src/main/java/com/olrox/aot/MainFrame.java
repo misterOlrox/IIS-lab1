@@ -4,13 +4,17 @@ import com.olrox.aot.layout.factory.JMenuBarFactory;
 import com.olrox.aot.layout.model.WordTableModel;
 import com.olrox.aot.lib.dict.Dictionary;
 import com.olrox.aot.lib.dict.DictionaryImpl;
+import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.Word;
 import com.olrox.aot.text.TextReader;
+import mdlaf.MaterialLookAndFeel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -53,13 +57,14 @@ public class MainFrame extends JFrame {
         wordTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                var dialog = new EditWordDialog(
-                        wordTableModel,
-                        wordTable.convertRowIndexToModel(wordTable.getSelectedRow()),
-                        wordTable.convertColumnIndexToModel(wordTable.getSelectedColumn())
-                );
-                dialog.setVisible(true);
-                super.mouseClicked(e);
+                if (e.getClickCount() == 2) {
+                    var dialog = new EditWordDialog(
+                            wordTableModel,
+                            wordTable.convertRowIndexToModel(wordTable.getSelectedRow()),
+                            wordTable.convertColumnIndexToModel(wordTable.getSelectedColumn())
+                    );
+                    dialog.setVisible(true);
+                }
             }
         });
         readText(Paths.get("./src/main/resources/text1.txt").toFile());
@@ -69,7 +74,8 @@ public class MainFrame extends JFrame {
         readText(Paths.get("./src/main/resources/text5.txt").toFile());
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(new MaterialLookAndFeel());
         MainFrame mainFrame = new MainFrame();
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -79,7 +85,9 @@ public class MainFrame extends JFrame {
     }
 
     public void readText(File file) {
-        dictionary.addWords(textReader.readFile(file));
+        Text text = new Text(file);
+        text.read();
+        dictionary.addWords(text.getWords());
         wordTableModel.fireTableDataChanged();
     }
 
