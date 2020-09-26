@@ -4,8 +4,7 @@ import com.olrox.aot.lib.alphabet.EnglishAlphabet
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
 class Text {
 
@@ -15,8 +14,8 @@ class Text {
     private String stringRepresentation
     private List<String> words
 
-    Text(File file) {
-        this.pathToText = Paths.get(file.getPath());
+    Text(Path path) {
+        this.pathToText = path;
     }
 
     void read() {
@@ -42,5 +41,9 @@ class Text {
 
     List<String> getWords() {
         return Collections.unmodifiableList(words)
+    }
+
+    String getStringRepresentation() {
+        return stringRepresentation
     }
 }

@@ -1,15 +1,16 @@
 package com.olrox.aot.lib.dict;
 
+import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.Word;
 
 import java.util.List;
 
 public interface Dictionary {
-    void addWord(String word);
+    Word addWord(String word, Text text);
 
     Word editWord(String oldValue, String newValue);
 
-    void addWords(List<String> words);
+    void addWords(Text text);
 
     List<Word> getSortedByFrequency();
 

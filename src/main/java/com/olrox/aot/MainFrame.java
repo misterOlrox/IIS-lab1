@@ -1,19 +1,17 @@
 package com.olrox.aot;
 
+import com.olrox.aot.layout.EditWordDialog;
 import com.olrox.aot.layout.factory.JMenuBarFactory;
 import com.olrox.aot.layout.model.WordTableModel;
 import com.olrox.aot.lib.dict.Dictionary;
 import com.olrox.aot.lib.dict.DictionaryImpl;
 import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.Word;
-import com.olrox.aot.text.TextReader;
-import mdlaf.MaterialLookAndFeel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
@@ -21,7 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,6 @@ public class MainFrame extends JFrame {
 
     private Dictionary dictionary = new DictionaryImpl();
     private List<Word> showedWords = new ArrayList<>();
-    private TextReader textReader = new TextReader();
 
     private JPanel rootPanel;
     private JTable wordTable;
@@ -67,15 +64,14 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        readText(Paths.get("./src/main/resources/text1.txt").toFile());
-        readText(Paths.get("./src/main/resources/text2.txt").toFile());
-        readText(Paths.get("./src/main/resources/text3.txt").toFile());
-        readText(Paths.get("./src/main/resources/text4.txt").toFile());
-        readText(Paths.get("./src/main/resources/text5.txt").toFile());
+        readText(Paths.get("./src/main/resources/text1.txt"));
+        readText(Paths.get("./src/main/resources/text2.txt"));
+        readText(Paths.get("./src/main/resources/text3.txt"));
+        readText(Paths.get("./src/main/resources/text4.txt"));
+        readText(Paths.get("./src/main/resources/text5.txt"));
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        UIManager.setLookAndFeel(new MaterialLookAndFeel());
         MainFrame mainFrame = new MainFrame();
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -84,10 +80,10 @@ public class MainFrame extends JFrame {
         });
     }
 
-    public void readText(File file) {
-        Text text = new Text(file);
+    public void readText(Path path) {
+        Text text = new Text(path);
         text.read();
-        dictionary.addWords(text.getWords());
+        dictionary.addWords(text);
         wordTableModel.fireTableDataChanged();
     }
 

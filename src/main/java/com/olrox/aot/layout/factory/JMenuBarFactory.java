@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.io.File;
+import java.nio.file.Paths;
 
 public class JMenuBarFactory {
 
@@ -30,7 +31,7 @@ public class JMenuBarFactory {
             int ret = fileopen.showDialog(parentFrame, "Open");
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileopen.getSelectedFile();
-                parentFrame.readText(file);
+                parentFrame.readText(Paths.get(file.getPath()));
             }
         });
 

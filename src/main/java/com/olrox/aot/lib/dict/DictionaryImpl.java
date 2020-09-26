@@ -1,7 +1,9 @@
 package com.olrox.aot.lib.dict;
 
+import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.EnglishWord;
 import com.olrox.aot.lib.word.Word;
+import com.olrox.aot.lib.word.WordEntry;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -15,14 +17,17 @@ public class DictionaryImpl implements Dictionary {
     private Map<String, Word> entireMap = new HashMap<>();
 
     @Override
-    public void addWord(String word) {
+    public Word addWord(String word, Text text) {
         wordUsageCounter++;
         Word existingWord = entireMap.get(word);
         if (existingWord == null) {
             Word newWord = new EnglishWord(word);
             entireMap.put(word, newWord);
+            newWord.addEntry(new WordEntry(newWord, text, 0));
+            return newWord;
         } else {
-            existingWord.incrementFrequency();
+            existingWord.addEntry(new WordEntry(existingWord, text, 0));
+            return existingWord;
         }
     }
 
@@ -36,15 +41,15 @@ public class DictionaryImpl implements Dictionary {
             entireMap.put(newValue, oldWord);
         } else {
             entireMap.remove(oldValue);
-            newWord.incrementFrequency(oldWord.getFrequency());
+            newWord.addEntries(oldWord.getWordEntries());
         }
 
         return newWord;
     }
 
     @Override
-    public void addWords(List<String> words) {
-        words.forEach(this::addWord);
+    public void addWords(Text text) {
+        text.getWords().forEach(w -> this.addWord(w, text));
     }
 
     @Override

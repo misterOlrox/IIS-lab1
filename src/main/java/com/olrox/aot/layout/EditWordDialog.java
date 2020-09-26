@@ -1,4 +1,4 @@
-package com.olrox.aot;
+package com.olrox.aot.layout;
 
 import com.olrox.aot.layout.model.WordTableModel;
 
@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ public class EditWordDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JButton deleteButton;
+    private JButton showEntriesButton;
 
     public EditWordDialog(WordTableModel wordTableModel, int rowInd, int colInd) {
         setContentPane(contentPane);
@@ -36,6 +38,11 @@ public class EditWordDialog extends JDialog {
         deleteButton.addActionListener((e) -> {
             wordTableModel.setValueAt(textField1.getText(), rowInd, colInd);
             dispose();
+        });
+
+        showEntriesButton.addActionListener(e -> {
+            var editTextDialog = new EditTextDialog(wordTableModel.getWord(rowInd));
+            editTextDialog.setVisible(true);
         });
 
         buttonCancel.addActionListener(new ActionListener() {
@@ -59,6 +66,7 @@ public class EditWordDialog extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        setPreferredSize(new Dimension(600, 400));
         pack();
     }
 

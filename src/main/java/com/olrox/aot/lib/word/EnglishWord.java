@@ -1,8 +1,12 @@
 package com.olrox.aot.lib.word;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class EnglishWord implements Word {
     private String value;
-    private long frequency = 1L;
+    private List<WordEntry> wordEntries = new ArrayList<>();
 
     public EnglishWord(String value) {
         this.value = value;
@@ -20,16 +24,21 @@ public class EnglishWord implements Word {
 
     @Override
     public long getFrequency() {
-        return frequency;
+        return wordEntries.size();
     }
 
     @Override
-    public void incrementFrequency() {
-        ++frequency;
+    public void addEntry(WordEntry wordEntry) {
+        wordEntries.add(wordEntry);
     }
 
     @Override
-    public void incrementFrequency(long i) {
-        frequency += i;
+    public void addEntries(List<WordEntry> wordEntries) {
+        this.wordEntries.addAll(wordEntries);
+    }
+
+    @Override
+    public List<WordEntry> getWordEntries() {
+        return Collections.unmodifiableList(wordEntries);
     }
 }

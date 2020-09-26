@@ -38,6 +38,10 @@ public class WordTableModel extends AbstractTableModel {
         }
     }
 
+    public Word getWord(int rowIndex) {
+        return filteredList.get(rowIndex);
+    }
+
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         String oldValue = filteredList.get(rowIndex).getValue();
