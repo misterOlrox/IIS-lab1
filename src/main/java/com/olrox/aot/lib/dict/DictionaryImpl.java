@@ -7,8 +7,10 @@ import com.olrox.aot.lib.word.WordEntry;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DictionaryImpl implements Dictionary {
@@ -23,10 +25,10 @@ public class DictionaryImpl implements Dictionary {
         if (existingWord == null) {
             Word newWord = new EnglishWord(word);
             entireMap.put(word, newWord);
-            newWord.addEntry(new WordEntry(newWord, text, 0));
+            newWord.addEntry(new WordEntry(newWord, text));
             return newWord;
         } else {
-            existingWord.addEntry(new WordEntry(existingWord, text, 0));
+            existingWord.addEntry(new WordEntry(existingWord, text));
             return existingWord;
         }
     }
@@ -74,5 +76,19 @@ public class DictionaryImpl implements Dictionary {
     @Override
     public void deleteWord(String word) {
         entireMap.remove(word);
+    }
+
+    @Override
+    public void onTextChanged(Text changedText) {
+        Set<String> toRemove = new HashSet<>();
+        entireMap.forEach((k, v) -> {
+            v.onTextRemoved(changedText);
+            if (v.getFrequency() == 0) {
+                toRemove.add(k);
+            }
+        });
+        toRemove.forEach(k -> entireMap.remove(k));
+        changedText.read();
+        addWords(changedText);
     }
 }

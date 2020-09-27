@@ -43,6 +43,7 @@ public class EditWordDialog extends JDialog {
         showEntriesButton.addActionListener(e -> {
             var editTextDialog = new EditTextDialog(wordTableModel.getWord(rowInd));
             editTextDialog.setVisible(true);
+            editTextDialog.getSavedTexts().forEach(wordTableModel::updateTableAfterTextChanged);
         });
 
         buttonCancel.addActionListener(new ActionListener() {

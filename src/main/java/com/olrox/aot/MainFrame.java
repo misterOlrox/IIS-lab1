@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
         readText(Paths.get("./src/main/resources/text5.txt"));
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         MainFrame mainFrame = new MainFrame();
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

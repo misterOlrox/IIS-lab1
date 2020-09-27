@@ -1,6 +1,7 @@
 package com.olrox.aot.layout.model;
 
 import com.olrox.aot.lib.dict.Dictionary;
+import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.Word;
 
 import javax.swing.table.AbstractTableModel;
@@ -91,5 +92,9 @@ public class WordTableModel extends AbstractTableModel {
     public void setFilter(String filter) {
         filteredList.setFilter(filter);
         fireTableDataChanged();
+    }
+
+    public void updateTableAfterTextChanged(Text changedText) {
+        dictionary.onTextChanged(changedText);
     }
 }

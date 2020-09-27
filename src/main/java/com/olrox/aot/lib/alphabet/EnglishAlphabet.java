@@ -5,4 +5,8 @@ public class EnglishAlphabet {
         char c = word.charAt(0);
         return c >= 'a' && c <= 'z';
     }
+
+    public static boolean isEnglish(char c) {
+        return c >= 'a' && c <= 'z';
+    }
 }

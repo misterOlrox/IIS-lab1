@@ -5,9 +5,9 @@ import com.olrox.aot.lib.text.Text;
 class WordEntry {
     final Word word
     final Text text
-    final long startPos
+    long startPos
 
-    WordEntry(Word word, Text text, long startPos) {
+    WordEntry(Word word, Text text) {
         this.word = word
         this.text = text
         this.startPos = startPos

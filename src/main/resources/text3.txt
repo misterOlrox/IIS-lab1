@@ -1914,7 +1914,7 @@ Then suddenly Denethor laughed. He stood up tall and proud again, and stepping s
 
 ‘What then would you have,’ said Gandalf, ‘if your will could have its way?’
 
-‘I would have things as they were in all the days of my life,’ answered Denethor, ‘and in the days of my longfathers before me: to be the Lord of this City in peace, and leave my chair to a son after me, who would be his own master and no wizard’s pupil. But if doom denies this to me, then I will have naught: neither life diminished, nor love halved, nor honour abated.’
+‘I would have things as they were in all the days of my life,’ answered Denethor, ‘and in the days of my longfathers before me: to be the Lord of this City in peace, and leave my chair to a son after me, who would be his own master and no wizard’s pupil. But if doom denies this to me, then I will have naught: neither life diminished, nor love halved, nor honour QWERTY.’
 
 ‘To me it would not seem that a Steward who faithfully surrenders his charge is diminished in love or in honour,’ said Gandalf. ‘And at the least you shall not rob your son of his choice while his death is still in doubt.’
 

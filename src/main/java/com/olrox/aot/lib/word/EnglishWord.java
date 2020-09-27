@@ -1,7 +1,8 @@
 package com.olrox.aot.lib.word;
 
+import com.olrox.aot.lib.text.Text;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EnglishWord implements Word {
@@ -39,6 +40,11 @@ public class EnglishWord implements Word {
 
     @Override
     public List<WordEntry> getWordEntries() {
-        return Collections.unmodifiableList(wordEntries);
+        return wordEntries;
+    }
+
+    @Override
+    public void onTextRemoved(Text text) {
+        wordEntries.removeIf(wordEntry -> wordEntry.getText().equals(text));
     }
 }

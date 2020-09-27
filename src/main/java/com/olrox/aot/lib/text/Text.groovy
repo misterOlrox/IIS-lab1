@@ -8,7 +8,8 @@ import java.util.stream.Collectors
 
 class Text {
 
-    private final static String WORD_DELIMITER = "[\\s/.,!`?:;‘’“”*_+—\\d\"'\\(\\)\\n]+";
+    public final static String WORD_DELIMITER = "[\\s/.,‚!`?:;‘’“”*_+—\\d\"'\\)\\(\\n]+";
+    private final static TextSaver textSaver = new TextSaver()
 
     final Path pathToText
     private String stringRepresentation
@@ -19,12 +20,6 @@ class Text {
     }
 
     void read() {
-        try {
-            stringRepresentation = Files.readString(pathToText);
-        } catch (IOException e) {
-            System.err.format("IOException: %s%n", e);
-        }
-
         words = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(pathToText.toString()))) {
             String line;
@@ -39,11 +34,23 @@ class Text {
         }
     }
 
+    void save(String editedText) {
+        stringRepresentation = editedText
+        textSaver.save(this)
+    }
+
     List<String> getWords() {
         return Collections.unmodifiableList(words)
     }
 
-    String getStringRepresentation() {
-        return stringRepresentation
+    String getAsString() {
+        if (stringRepresentation == null) {
+            stringRepresentation = Files.readString(pathToText).replaceAll("\\r", "")
+        }
+        stringRepresentation
+    }
+
+    String getPathAsString() {
+        pathToText.toString()
     }
 }

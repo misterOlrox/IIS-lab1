@@ -19,4 +19,6 @@ public interface Dictionary {
     long getWordsInDictionary();
 
     void deleteWord(String word);
+
+    void onTextChanged(Text changedText);
 }
