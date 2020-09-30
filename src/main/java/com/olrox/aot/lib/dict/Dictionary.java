@@ -6,9 +6,13 @@ import com.olrox.aot.lib.word.Word;
 import java.util.List;
 
 public interface Dictionary {
+    Word addWord(String word);
+
     Word addWord(String word, Text text);
 
     Word editWord(String oldValue, String newValue);
+
+    boolean contains(String word);
 
     void addWords(Text text);
 

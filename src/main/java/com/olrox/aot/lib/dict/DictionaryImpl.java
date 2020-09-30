@@ -19,6 +19,20 @@ public class DictionaryImpl implements Dictionary {
     private Map<String, Word> entireMap = new HashMap<>();
 
     @Override
+    public Word addWord(String word) {
+        wordUsageCounter++;
+        Word existingWord = entireMap.get(word);
+        if (existingWord == null) {
+            Word newWord = new EnglishWord(word);
+            entireMap.put(word, newWord);
+            return newWord;
+        } else {
+            System.err.println("Word already in dictionary");
+            return existingWord;
+        }
+    }
+
+    @Override
     public Word addWord(String word, Text text) {
         wordUsageCounter++;
         Word existingWord = entireMap.get(word);
@@ -37,6 +51,9 @@ public class DictionaryImpl implements Dictionary {
     public Word editWord(String oldValue, String newValue) {
         Word oldWord = entireMap.get(oldValue);
         Word newWord = entireMap.get(newValue);
+        if (oldValue.equals(newValue)) {
+            return oldWord;
+        }
         if (newWord == null) {
             entireMap.remove(oldValue);
             oldWord.setValue(newValue);
@@ -47,6 +64,11 @@ public class DictionaryImpl implements Dictionary {
         }
 
         return newWord;
+    }
+
+    @Override
+    public boolean contains(String word) {
+        return entireMap.containsKey(word);
     }
 
     @Override

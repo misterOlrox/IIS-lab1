@@ -9,6 +9,7 @@ import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.Word;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -85,6 +86,15 @@ public class MainFrame extends JFrame {
         text.read();
         dictionary.addWords(text);
         wordTableModel.fireTableDataChanged();
+    }
+
+    public void addWord(String word) {
+        if (!dictionary.contains(word)) {
+            dictionary.addWord(word);
+            wordTableModel.fireTableDataChanged();
+        } else {
+            JOptionPane.showMessageDialog(this, "Word is already in dictionary!");
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import com.olrox.aot.layout.model.WordTableModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -36,8 +37,15 @@ public class EditWordDialog extends JDialog {
         });
 
         deleteButton.addActionListener((e) -> {
-            wordTableModel.setValueAt(textField1.getText(), rowInd, colInd);
-            dispose();
+            int result = JOptionPane.showOptionDialog(this,
+                    "Are you sure?",
+                    "Delete",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, null, null);
+            if (result == 0) {
+                wordTableModel.delete(rowInd);
+                dispose();
+            }
         });
 
         showEntriesButton.addActionListener(e -> {

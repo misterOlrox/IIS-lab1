@@ -56,6 +56,7 @@ public class WordTableModel extends AbstractTableModel {
 
     public void delete(int rowIndex) {
         dictionary.deleteWord(filteredList.get(rowIndex).getValue());
+        fireTableDataChanged();
     }
 
     @Override
