@@ -81,6 +81,10 @@ public class MainFrame extends JFrame {
         });
     }
 
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
     public void readText(Path path) {
         Text text = new Text(path);
         text.read();
@@ -95,6 +99,11 @@ public class MainFrame extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Word is already in dictionary!");
         }
+    }
+
+    public void clearDictionary() {
+        dictionary.clear();
+        wordTableModel.fireTableDataChanged();
     }
 
 }

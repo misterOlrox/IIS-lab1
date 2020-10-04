@@ -4,24 +4,25 @@ import com.olrox.aot.lib.alphabet.EnglishAlphabet
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.stream.Collectors
 
-class Text {
+class Text implements Serializable {
 
     public final static String WORD_DELIMITER = "[\\s/.,‚!`?:;‘’“”*_+—\\d\"'\\)\\(\\n]+";
     private final static TextSaver textSaver = new TextSaver()
 
-    final Path pathToText
+    final String pathToText
     private String stringRepresentation
     private List<String> words
 
     Text(Path path) {
-        this.pathToText = path;
+        this.pathToText = path.toString()
     }
 
     void read() {
         words = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(pathToText.toString()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(pathToText))) {
             String line;
             while ((line = br.readLine()) != null) {
                 words.addAll(Arrays.stream(line.trim().toLowerCase().split(WORD_DELIMITER))
@@ -45,12 +46,8 @@ class Text {
 
     String getAsString() {
         if (stringRepresentation == null) {
-            stringRepresentation = Files.readString(pathToText).replaceAll("\\r", "")
+            stringRepresentation = Files.readString(Paths.get(pathToText)).replaceAll("\\r", "")
         }
         stringRepresentation
-    }
-
-    String getPathAsString() {
-        pathToText.toString()
     }
 }

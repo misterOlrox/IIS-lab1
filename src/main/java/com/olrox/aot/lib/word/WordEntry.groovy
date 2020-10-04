@@ -2,7 +2,7 @@ package com.olrox.aot.lib.word
 
 import com.olrox.aot.lib.text.Text;
 
-class WordEntry {
+class WordEntry implements Serializable {
     final Word word
     final Text text
     long startPos
@@ -15,6 +15,6 @@ class WordEntry {
 
     @Override
     String toString() {
-        text.pathToText.toString() + " : " + startPos
+        text.pathToText + " : " + startPos
     }
 }

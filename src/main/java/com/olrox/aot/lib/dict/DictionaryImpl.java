@@ -113,4 +113,10 @@ public class DictionaryImpl implements Dictionary {
         changedText.read();
         addWords(changedText);
     }
+
+    @Override
+    public void clear() {
+        entireMap.clear();
+        wordUsageCounter = 0;
+    }
 }
