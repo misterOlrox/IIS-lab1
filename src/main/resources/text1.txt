@@ -4805,7 +4805,7 @@ All sat silent for a while, until at length Boromir spoke. `He is a small thing,
 
 'You were less tender to me,' said Glóin with a flash of his eyes as old memories were stirred of his imprisonment in the deep places of the Elven-king's halls.
 
-'Now come!' said Gandalf. `Pray do not interrupt, my good Glóin. That was a regrettable misunderstanding, long set right. If all the grievances that stand between Elves and Dwarves are to be brought up here, we may as well abandon this Council.'
+'Now come!' said Gandalf. `Pray do not interrupt, my good Glóin. That was a regrettable misunderstanding, long set right. If all the grievances that stand between Elves and Dwarves are to be brought up here, we may as well abandn this Council.'
 
 Glóin rose and bowed, and Legolas continued. 'In the days of fair weather we led Gollum through the woods; and there was a high tree standing alone far from the others which he liked to climb. Often we let him mount up to the highest branches, until he felt the free wind; but we set a guard at the tree's foot. One day he refused to come down, and the guards had no mind to climb after him: he had learned the trick of clinging to boughs with his feet as well as with his hands; so they sat by the tree far into the night.
 

@@ -98,4 +98,10 @@ public class WordTableModel extends AbstractTableModel {
     public void updateTableAfterTextChanged(Text changedText) {
         dictionary.onTextChanged(changedText);
     }
+
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
+        this.filteredList = new FilteredList(dictionary.getSortedByFrequency());
+        fireTableDataChanged();
+    }
 }

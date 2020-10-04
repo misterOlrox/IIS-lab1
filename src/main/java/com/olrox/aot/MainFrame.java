@@ -81,10 +81,6 @@ public class MainFrame extends JFrame {
         });
     }
 
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
-
     public void readText(Path path) {
         Text text = new Text(path);
         text.read();
@@ -104,6 +100,15 @@ public class MainFrame extends JFrame {
     public void clearDictionary() {
         dictionary.clear();
         wordTableModel.fireTableDataChanged();
+    }
+
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
+        wordTableModel.setDictionary(dictionary);
     }
 
 }

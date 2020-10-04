@@ -2,6 +2,7 @@ package com.olrox.aot.layout.factory;
 
 import com.olrox.aot.MainFrame;
 import com.olrox.aot.lib.dict.Dictionary;
+import com.olrox.aot.lib.util.DictionarySerializationLoader;
 import com.olrox.aot.lib.util.DictionarySerializationSaver;
 
 import javax.swing.JFileChooser;
@@ -37,6 +38,7 @@ public class JMenuBarFactory {
         dictionariesMenu.add(saveDictionaryItem);
         JMenuItem loadDictionaryItem = new JMenuItem("Load dictionary");
         dictionariesMenu.add(loadDictionaryItem);
+        dictionariesMenu.addSeparator();
         JMenuItem clearDictionaryItem = new JMenuItem("Clear dictionary");
         dictionariesMenu.add(clearDictionaryItem);
 
@@ -60,6 +62,17 @@ public class JMenuBarFactory {
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileopen.getSelectedFile();
                 saver.save(dictionary, file.getPath());
+            }
+        });
+
+        loadDictionaryItem.addActionListener(l -> {
+            var loader = new DictionarySerializationLoader();
+            JFileChooser fileopen = new JFileChooser("./src/main/resources/dictionaries");
+            int ret = fileopen.showOpenDialog(parentFrame);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                File file = fileopen.getSelectedFile();
+                var dict = loader.load(file.getPath());
+                parentFrame.setDictionary(dict);
             }
         });
 
