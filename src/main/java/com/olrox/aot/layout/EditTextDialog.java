@@ -178,6 +178,8 @@ public class EditTextDialog extends JDialog {
             end = "";
         }
         textPane.setText(start + textToShow.getAsString().substring(startPos, endPos) + end);
+        StyledDocument doc1 = textPane.getStyledDocument();
+        doc1.setCharacterAttributes(0, doc1.getLength(), SimpleAttributeSet.EMPTY, true);
 
         SimpleAttributeSet color = new SimpleAttributeSet();
         StyleConstants.setBackground(color, Color.yellow);
