@@ -4,6 +4,7 @@ import com.olrox.aot.lib.text.Text;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public interface Word extends Serializable {
     String getValue();
@@ -15,4 +16,10 @@ public interface Word extends Serializable {
     List<WordEntry> getWordEntries();
 
     void onTextRemoved(Text text);
+
+    void addTag(String tag);
+
+    void removeTag(String tag);
+
+    Set<String> getTags();
 }

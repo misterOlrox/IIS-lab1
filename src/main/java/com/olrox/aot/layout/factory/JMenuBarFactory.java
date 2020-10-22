@@ -1,6 +1,7 @@
 package com.olrox.aot.layout.factory;
 
 import com.olrox.aot.MainFrame;
+import com.olrox.aot.layout.AboutTagsDialog;
 import com.olrox.aot.lib.dict.Dictionary;
 import com.olrox.aot.lib.util.DictionarySerializationLoader;
 import com.olrox.aot.lib.util.DictionarySerializationSaver;
@@ -30,20 +31,25 @@ public class JMenuBarFactory {
         menuBar.add(dictionariesMenu);
         JMenu wordsMenu = new JMenu("Words");
         menuBar.add(wordsMenu);
+        JMenu helpMenu = new JMenu("Help");
+        menuBar.add(helpMenu);
 
-        JMenuItem addTextItem = new JMenuItem("Add");
+        JMenuItem addTextItem = new JMenuItem("Add...");
         textsMenu.add(addTextItem);
 
         JMenuItem saveDictionaryItem = new JMenuItem("Save current dictionary");
         dictionariesMenu.add(saveDictionaryItem);
-        JMenuItem loadDictionaryItem = new JMenuItem("Load dictionary");
+        JMenuItem loadDictionaryItem = new JMenuItem("Load dictionary...");
         dictionariesMenu.add(loadDictionaryItem);
         dictionariesMenu.addSeparator();
         JMenuItem clearDictionaryItem = new JMenuItem("Clear dictionary");
         dictionariesMenu.add(clearDictionaryItem);
 
-        JMenuItem addWordItem = new JMenuItem("Add word");
+        JMenuItem addWordItem = new JMenuItem("Add word...");
         wordsMenu.add(addWordItem);
+
+        JMenuItem wordTagsItem = new JMenuItem("About word tags...");
+        helpMenu.add(wordTagsItem);
 
         addTextItem.addActionListener(actionEvent -> {
             JFileChooser fileopen = new JFileChooser("./src/main/resources");
@@ -83,6 +89,11 @@ public class JMenuBarFactory {
         addWordItem.addActionListener(l -> {
             String result = JOptionPane.showInputDialog(parentFrame, "New word: ");
             parentFrame.addWord(result);
+        });
+
+        wordTagsItem.addActionListener(l -> {
+            AboutTagsDialog aboutTagsDialog = new AboutTagsDialog();
+            aboutTagsDialog.setVisible(true);
         });
 
         return menuBar;

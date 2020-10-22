@@ -3,11 +3,15 @@ package com.olrox.aot.lib.word;
 import com.olrox.aot.lib.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EnglishWord implements Word {
     private String value;
     private List<WordEntry> wordEntries = new ArrayList<>();
+    private Set<String> tags = new HashSet<>();
 
     public EnglishWord(String value) {
         this.value = value;
@@ -46,5 +50,28 @@ public class EnglishWord implements Word {
     @Override
     public void onTextRemoved(Text text) {
         wordEntries.removeIf(wordEntry -> wordEntry.getText().equals(text));
+    }
+
+    @Override
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    @Override
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.unmodifiableSet(tags);
+    }
+
+    @Override
+    public String toString() {
+        return "EnglishWord{" +
+                "value='" + value + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }

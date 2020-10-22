@@ -15,6 +15,8 @@ public interface Dictionary extends Serializable {
 
     boolean contains(String word);
 
+    Word getWord(String word);
+
     void addWords(Text text);
 
     List<Word> getSortedByFrequency();

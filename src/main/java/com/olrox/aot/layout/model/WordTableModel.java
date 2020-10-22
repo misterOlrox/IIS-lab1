@@ -97,6 +97,8 @@ public class WordTableModel extends AbstractTableModel {
 
     public void updateTableAfterTextChanged(Text changedText) {
         dictionary.onTextChanged(changedText);
+        //String taggedText = Tagger.tagString(changedText.getAsString());
+        //Tagger.addTagsToWords(taggedText, dictionary);
     }
 
     public void setDictionary(Dictionary dictionary) {
