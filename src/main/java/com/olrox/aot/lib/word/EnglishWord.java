@@ -63,6 +63,11 @@ public class EnglishWord implements Word {
     }
 
     @Override
+    public void removeAllTags() {
+        tags.clear();
+    }
+
+    @Override
     public Set<String> getTags() {
         return Collections.unmodifiableSet(tags);
     }

@@ -5,6 +5,7 @@ import com.olrox.aot.lib.word.Word;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public interface Dictionary extends Serializable {
     Word addWord(String word);
@@ -30,4 +31,8 @@ public interface Dictionary extends Serializable {
     void onTextChanged(Text changedText);
 
     void clear();
+
+    Set<Text> getTexts();
+
+    Text getTextByPath(String path);
 }

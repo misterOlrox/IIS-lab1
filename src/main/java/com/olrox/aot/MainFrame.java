@@ -1,7 +1,6 @@
 package com.olrox.aot;
 
 import com.olrox.aot.layout.EditWordDialog;
-import com.olrox.aot.layout.TagWordsDialog;
 import com.olrox.aot.layout.factory.JMenuBarFactory;
 import com.olrox.aot.layout.model.WordTableModel;
 import com.olrox.aot.lib.dict.Dictionary;
@@ -67,10 +66,10 @@ public class MainFrame extends JFrame {
             }
         });
         readText(Paths.get("./src/main/resources/text1.txt"));
-        //readText(Paths.get("./src/main/resources/text2.txt"));
-        //readText(Paths.get("./src/main/resources/text3.txt"));
-        //readText(Paths.get("./src/main/resources/text4.txt"));
-        //readText(Paths.get("./src/main/resources/text5.txt"));
+        readText(Paths.get("./src/main/resources/text2.txt"));
+        readText(Paths.get("./src/main/resources/text3.txt"));
+        readText(Paths.get("./src/main/resources/text4.txt"));
+        readText(Paths.get("./src/main/resources/text5.txt"));
     }
 
     public void readText(Path path) {
@@ -78,12 +77,6 @@ public class MainFrame extends JFrame {
         text.read();
         dictionary.addWords(text);
         wordTableModel.fireTableDataChanged();
-        reTag(text);
-    }
-
-    public void reTag(Text text) {
-        TagWordsDialog tagWordsDialog = new TagWordsDialog(text, dictionary);
-        tagWordsDialog.setVisible(true);
     }
 
     public void addWord(String word) {

@@ -13,7 +13,8 @@ class Text implements Serializable {
     private final static TextSaver textSaver = new TextSaver()
 
     final String pathToText
-    transient private String stringRepresentation
+    private String stringRepresentation
+    String taggedTextRepresentation
     private List<String> words
 
     Text(Path path) {

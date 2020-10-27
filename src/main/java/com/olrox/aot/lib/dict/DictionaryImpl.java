@@ -1,11 +1,11 @@
 package com.olrox.aot.lib.dict;
 
-import com.olrox.aot.lib.tagging.Tagger;
 import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.word.EnglishWord;
 import com.olrox.aot.lib.word.Word;
 import com.olrox.aot.lib.word.WordEntry;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +18,7 @@ public class DictionaryImpl implements Dictionary {
 
     private long wordUsageCounter = 0;
     private Map<String, Word> entireMap = new HashMap<>();
+    private Set<Text> texts = new HashSet<>();
 
     @Override
     public Word addWord(String word) {
@@ -35,6 +36,7 @@ public class DictionaryImpl implements Dictionary {
 
     @Override
     public Word addWord(String word, Text text) {
+        texts.add(text);
         wordUsageCounter++;
         Word existingWord = entireMap.get(word);
         if (existingWord == null) {
@@ -124,5 +126,15 @@ public class DictionaryImpl implements Dictionary {
     public void clear() {
         entireMap.clear();
         wordUsageCounter = 0;
+    }
+
+    @Override
+    public Set<Text> getTexts() {
+        return Collections.unmodifiableSet(texts);
+    }
+
+    @Override
+    public Text getTextByPath(String path) {
+        return texts.stream().filter(t -> t.getPathToText().equals(path)).findFirst().get();
     }
 }

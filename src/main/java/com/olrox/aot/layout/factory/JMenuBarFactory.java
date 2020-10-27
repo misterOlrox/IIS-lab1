@@ -2,7 +2,10 @@ package com.olrox.aot.layout.factory;
 
 import com.olrox.aot.MainFrame;
 import com.olrox.aot.layout.AboutTagsDialog;
+import com.olrox.aot.layout.TagWordsDialog;
+import com.olrox.aot.layout.TextChooserDialog;
 import com.olrox.aot.lib.dict.Dictionary;
+import com.olrox.aot.lib.text.Text;
 import com.olrox.aot.lib.util.DictionarySerializationLoader;
 import com.olrox.aot.lib.util.DictionarySerializationSaver;
 
@@ -36,8 +39,10 @@ public class JMenuBarFactory {
 
         JMenuItem addTextItem = new JMenuItem("Add...");
         textsMenu.add(addTextItem);
+        JMenuItem tagTextItem = new JMenuItem("Tag...");
+        textsMenu.add(tagTextItem);
 
-        JMenuItem saveDictionaryItem = new JMenuItem("Save current dictionary");
+        JMenuItem saveDictionaryItem = new JMenuItem("Save current dictionary...");
         dictionariesMenu.add(saveDictionaryItem);
         JMenuItem loadDictionaryItem = new JMenuItem("Load dictionary...");
         dictionariesMenu.add(loadDictionaryItem);
@@ -58,6 +63,23 @@ public class JMenuBarFactory {
                 File file = fileopen.getSelectedFile();
                 parentFrame.readText(Paths.get(file.getPath()));
             }
+        });
+        tagTextItem.addActionListener(l -> {
+            while (true) {
+                TextChooserDialog textChooserDialog = new TextChooserDialog(parentFrame.getDictionary());
+                textChooserDialog.setVisible(true);
+                String chosenText = textChooserDialog.getResult();
+                if (chosenText == null) {
+                    break;
+                }
+                Text text = parentFrame.getDictionary().getTextByPath(chosenText);
+                TagWordsDialog tagWordsDialog = new TagWordsDialog(text, parentFrame.getDictionary());
+                tagWordsDialog.setVisible(true);
+            }
+//            parentFrame.getDictionary().getSortedByFrequency().forEach(Word::removeAllTags);
+//            parentFrame.getDictionary().getTexts().forEach(text -> {
+//                parentFrame.reTag(text);
+//            });
         });
 
         saveDictionaryItem.addActionListener(l -> {
