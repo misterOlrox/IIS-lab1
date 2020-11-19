@@ -1,108 +1,107 @@
 package com.olrox.aot;
 
-import com.olrox.aot.layout.EditWordDialog;
-import com.olrox.aot.layout.factory.JMenuBarFactory;
-import com.olrox.aot.layout.model.WordTableModel;
-import com.olrox.aot.lib.dict.Dictionary;
-import com.olrox.aot.lib.dict.DictionaryImpl;
-import com.olrox.aot.lib.text.Text;
-import com.olrox.aot.lib.word.Word;
+import com.olrox.aot.lib.ChooseAnswer;
+import com.olrox.aot.lib.logic.Attribute;
+import com.olrox.aot.lib.logic.RuleSet;
+import com.olrox.aot.lib.parser.JsonParser;
+import org.apache.commons.lang3.tuple.Pair;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Stack;
 
 public class MainFrame extends JFrame {
 
-    private Dictionary dictionary = new DictionaryImpl();
-    private List<Word> showedWords = new ArrayList<>();
-
     private JPanel rootPanel;
-    private JTable wordTable;
-    private JTextField findWordField;
-    private WordTableModel wordTableModel = new WordTableModel(showedWords, dictionary);
+    private JPanel buttonPanel;
+    private JLabel attributeLabel;
+    private JButton startButton;
 
-    public MainFrame() {
-        super("MyPaint");
+    private ArrayList<RuleSet> ruleSets;
+    private ArrayList<Attribute> attributes;
+
+    public MainFrame() throws IOException {
+        super("Pokemons");
         setContentPane(rootPanel);
 
-        JMenuBarFactory jMenuBarFactory = new JMenuBarFactory(this);
-        setJMenuBar(jMenuBarFactory.getJMenuBar());
+        ruleSets = JsonParser.parseRules(
+                Files.readString(Paths.get("./src/main/resources/question.json"))
+        );
+        attributes = JsonParser.parseAttrs(
+                Files.readString(Paths.get("./src/main/resources/rules.json"))
+        );
+
+        startButton = new JButton("Start");
+        buttonPanel.add(startButton);
+        attributeLabel.setText("Press 'Start' to start");
+
+        startButton.addActionListener((l) -> {
+            startButton.setVisible(false);
+            startGame("club");
+        });
+
         setMinimumSize(new Dimension(500, 500));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
+    }
 
-        findWordField.addActionListener((actionEvent) -> {
-            wordTableModel.setFilter(findWordField.getText());
-        });
+    public void startGame(String finalTarget) {
+        System.out.println("Program started");
 
-        wordTable.setModel(wordTableModel);
-        wordTable.setAutoCreateRowSorter(true);
-        wordTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    var dialog = new EditWordDialog(
-                            wordTableModel,
-                            wordTable.convertRowIndexToModel(wordTable.getSelectedRow()),
-                            wordTable.convertColumnIndexToModel(wordTable.getSelectedColumn())
-                    );
-                    dialog.setVisible(true);
-                }
+        Stack<String> targetStack = new Stack<>();
+        HashMap<Attribute, ContextValue> context = new HashMap<>();
+        targetStack.push(finalTarget);
+        boolean finished = false;
+
+        while (!finished) {
+            if (targetStack.isEmpty()) {
+                finished = true;
+                break;
             }
-        });
-        readText(Paths.get("./src/main/resources/text1.txt"));
-        readText(Paths.get("./src/main/resources/text2.txt"));
-        readText(Paths.get("./src/main/resources/text3.txt"));
-        readText(Paths.get("./src/main/resources/text4.txt"));
-        readText(Paths.get("./src/main/resources/text5.txt"));
-    }
 
-    public void readText(Path path) {
-        Text text = new Text(path);
-        text.read();
-        dictionary.addWords(text);
-        wordTableModel.fireTableDataChanged();
-    }
+            String currentTarget = targetStack.peek();
+            RuleSet currentRule = ruleSets.stream()
+                    .filter(x -> x.getThen().getAttr().equals(currentTarget))
+                    .findFirst()
+                    .orElse(null);
 
-    public void addWord(String word) {
-        if (!dictionary.contains(word)) {
-            dictionary.addWord(word);
-            wordTableModel.fireTableDataChanged();
-        } else {
-            JOptionPane.showMessageDialog(this, "Word is already in dictionary!");
+            if (currentRule != null) {
+                String target = targetStack.pop();
+                if (target.equals(finalTarget)) {
+                    break;
+                } else {
+                    ArrayList<String> options = attributes.stream()
+                            .filter(x -> x.getName().equals(target))
+                            .findFirst()
+                            .get().getValues();
+                    String answer = askQuestion(target, options);
+                    contextStack.push(Pair.of(target, answer));
+                }
+            } else {
+
+            }
         }
     }
 
-    public void clearDictionary() {
-        dictionary.clear();
-        wordTableModel.fireTableDataChanged();
+    public String askQuestion(String target, ArrayList<String> options) {
+        ChooseAnswer chooseAnswer = new ChooseAnswer(target, options);
+        chooseAnswer.setVisible(true);
+        return chooseAnswer.getAnswer();
     }
 
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
-
-    public void setDictionary(Dictionary dictionary) {
-        this.dictionary = dictionary;
-        wordTableModel.setDictionary(dictionary);
-    }
-
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
         MainFrame mainFrame = new MainFrame();
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
