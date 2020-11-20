@@ -1,3 +1,5 @@
+package com.olrox.aot.lib.logic;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -63,7 +65,7 @@ class KnowledgeBase {
         }
         String name = buffer.toString().trim();
         if ("".equals(name)) {
-            throw new IOException("cant read Attribute");
+            throw new IOException("cant read com.olrox.aot.lib.logic.Attribute");
         }
         return attributes.computeIfAbsent(name, k -> new Attribute(name));
     }
@@ -76,7 +78,7 @@ class KnowledgeBase {
         }
         String value = buffer.toString().trim();
         if ("".equals(value)) {
-            throw new IOException("cant read Attribute: " + attributes + " because of wrong value");
+            throw new IOException("cant read com.olrox.aot.lib.logic.Attribute: " + attributes + " because of wrong value");
         }
         attribute.add(value);
         return value;

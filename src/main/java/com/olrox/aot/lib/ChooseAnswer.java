@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseAnswer extends JDialog {
     private JPanel contentPane;
@@ -20,9 +21,9 @@ public class ChooseAnswer extends JDialog {
 
     private String answer;
 
-    private ArrayList<JButton> buttons = new ArrayList<>();
+    private List<JButton> buttons = new ArrayList<>();
 
-    public ChooseAnswer(String target, ArrayList<String> options) {
+    public ChooseAnswer(String target, List<String> options) {
         setContentPane(contentPane);
         setModal(true);
 
@@ -40,7 +41,7 @@ public class ChooseAnswer extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                //onCancel();
+                onCancel();
             }
         });
 
@@ -50,10 +51,18 @@ public class ChooseAnswer extends JDialog {
 
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
     private void postAnswer(String answer) {
         this.answer = answer;
+        dispose();
+    }
+
+    private void onCancel() {
+        this.answer = null;
         dispose();
     }
 

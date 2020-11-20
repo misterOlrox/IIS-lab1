@@ -1,17 +1,21 @@
-import javax.swing.JOptionPane;
+package com.olrox.aot.lib.logic;
+
+import com.olrox.aot.lib.ChooseAnswer;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
 
-class Algo {
+class Algorithm {
     private StartAction startAction;
-    private KnowledgeBase base = new KnowledgeBase();
+    private KnowledgeBase base;
     private Stack<TargetValue> targets = new Stack<>();
     private HashMap<Attribute, ContextValue> context = new HashMap<>();
     private boolean isFinished;
 
-    Algo(StartAction startAction, KnowledgeBase base) {
+    Algorithm(StartAction startAction, KnowledgeBase base) {
         this.startAction = startAction;
         this.base = base;
     }
@@ -20,9 +24,9 @@ class Algo {
         String[] choices = new String[target.possibleValues.size()];
         target.possibleValues.toArray(choices);
 
-        int defaultChoice = 0;
-
-        String input = (String) JOptionPane.showInputDialog(startAction.getMasterComponent(), target.question, target.toString(), JOptionPane.QUESTION_MESSAGE, null, choices, choices[defaultChoice]);
+        ChooseAnswer chooseAnswerDialog = new ChooseAnswer(target.question, Arrays.asList(choices));
+        chooseAnswerDialog.setVisible(true);
+        String input = chooseAnswerDialog.getAnswer();
 
         if (input == null) {
             startAction.writeLine("User canceled data input");
@@ -55,7 +59,7 @@ class Algo {
                         toAnalize = targets.pop().rule;
                     }
                     context.put(current, new ContextValue(res, null));
-                    startAction.writeLine("Answered: [" + current + " = " + res + "]\n");
+                    startAction.writeLine("Ответ: [" + current + " = " + res + "]\n");
                     if (toAnalize != null) {
                         AnalyzeRule(toAnalize);
                     }
@@ -66,9 +70,9 @@ class Algo {
         }
         String result = getTargetValue(target);
         if (result != null) {
-            startAction.writeLine("Answer: [" + target + " = " + result + "]\n");
+            startAction.writeLine("Ответ: [" + target + " = " + result + "]\n");
         } else {
-            startAction.writeLine("Can't find answer!");
+            startAction.writeLine("Нельзя найти ответ!");
         }
     }
 
@@ -86,17 +90,17 @@ class Algo {
             Boolean isRight = checkAttribute(entry.getKey(), entry.getValue());
             if (isRight == null) {
                 targets.push(new TargetValue(entry.getKey(), rule));
-                startAction.writeLine("Rule #" + rule + " is UNKNOWNN! \t??? [" + entry.getKey() + "]");
+                startAction.writeLine("Правило №" + rule + " было ВЫБРАНО! [" + entry.getKey() + "]");
                 return null;
             } else if (!isRight) {
-                startAction.writeLine("Rule #" + rule + " is FALSE!\t[" + entry.getKey() + " != " + entry.getValue() + "]");
+                startAction.writeLine("Правило №" + rule + " было ЛОЖНО! [" + entry.getKey() + " != " + entry.getValue() + "]");
                 res = false;
                 break;
             }
         }
         if (res) {
             context.put(rule.targetAttribute, new ContextValue(rule.targetValue, rule));
-            startAction.writeLine("Rule #" + rule + " is TRUE!\t[" + rule.targetAttribute + " = " + rule.targetValue + "]");
+            startAction.writeLine("Правило №" + rule + " было ИСТИННО! [" + rule.targetAttribute + " = " + rule.targetValue + "]");
             if (targets.empty()) {
                 isFinished = true;
             } else {

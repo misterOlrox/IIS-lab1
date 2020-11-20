@@ -1,3 +1,5 @@
+package com.olrox.aot.lib.logic;
+
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -12,30 +14,31 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
-class StartAction implements ActionListener {
+public class StartAction implements ActionListener {
 
     private JScrollPane masterComponent = null;
-    private JTextPane textArea = new JTextPane();
+    private JTextPane textArea;
 
-    private Algo algo = null;
+    private Algorithm algorithm = null;
     private KnowledgeBase base = new KnowledgeBase();
 
-    StartAction() {
+    public StartAction(JTextPane textArea, JScrollPane masterComponent) {
+        this.textArea = textArea;
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         StyledDocument doc = textArea.getStyledDocument();
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         textArea.setEditable(false);
-        masterComponent = new JScrollPane(textArea);
+        this.masterComponent = masterComponent;
 
         FileInputStream fisR = null;
         FileInputStream fisQ = null;
         try {
-            fisR = new FileInputStream(Run.pathToRules);
-            fisQ = new FileInputStream("question.txt");
+            fisR = new FileInputStream("./src/main/resources/rules.txt");
+            fisQ = new FileInputStream("./src/main/resources/question.txt");
             base.initBase(fisR);
             base.initQuestions(fisQ);
-            algo = new Algo(this, base);
+            algorithm = new Algorithm(this, base);
         } catch (IOException e) {
             writeLine(e.getMessage());
         } finally {
@@ -73,14 +76,14 @@ class StartAction implements ActionListener {
         Attribute[] choices = new Attribute[base.targetAttributes.size()];
         base.targetAttributes.toArray(choices);
 
-        final Attribute input = (Attribute) JOptionPane.showInputDialog(getMasterComponent(), "Choose:",
-                "Choose targer", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+        final Attribute input = (Attribute) JOptionPane.showInputDialog(null, "Выбрать: ",
+                "Конечная цель", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 
         if (input == null) {
             writeLine("User cancelled input!");
             return;
         }
 
-        new Thread(() -> algo.startAlgo(input)).start();
+        new Thread(() -> algorithm.startAlgo(input)).start();
     }
 }

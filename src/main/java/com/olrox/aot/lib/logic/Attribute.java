@@ -1,3 +1,5 @@
+package com.olrox.aot.lib.logic;
+
 import java.util.HashSet;
 
 class Attribute implements Comparable<Attribute> {
