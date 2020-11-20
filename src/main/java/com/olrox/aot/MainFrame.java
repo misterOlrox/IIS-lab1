@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
     private JButton startButton;
 
     public MainFrame() throws IOException {
-        super("Pokemons");
+        super("");
         setContentPane(rootPanel);
 
         startButton = new JButton("Start");

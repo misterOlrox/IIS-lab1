@@ -3,6 +3,8 @@ package com.olrox.aot.lib.logic;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -108,7 +110,9 @@ class KnowledgeBase {
     }
 
     Rule findNextRule(Attribute target) {
-        for (Rule rule : target.targetRules) {
+        var rules = new ArrayList<>(target.targetRules);
+        rules.sort(Comparator.comparing(x -> x.id));
+        for (Rule rule : rules) {
             if (!rule.isAnalyzed) {
                 return rule;
             }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 class Rule {
-    private Integer id;
+    Integer id;
     HashMap<Attribute, String> conditions = new HashMap<>();
     Attribute targetAttribute;
     String targetValue;

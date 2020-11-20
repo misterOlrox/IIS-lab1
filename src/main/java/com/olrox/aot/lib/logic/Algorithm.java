@@ -85,22 +85,23 @@ class Algorithm {
 
     private Boolean AnalyzeRule(Rule rule) {
         boolean res = true;
-        rule.isAnalyzed = true;
         for (Map.Entry<Attribute, String> entry : rule.conditions.entrySet()) {
             Boolean isRight = checkAttribute(entry.getKey(), entry.getValue());
             if (isRight == null) {
                 targets.push(new TargetValue(entry.getKey(), rule));
-                startAction.writeLine("Правило №" + rule + " было ВЫБРАНО! [" + entry.getKey() + "]");
+                startAction.writeLine("Правило №" + rule + " НЕИЗВЕСТНО! [" + entry.getKey() + "]");
                 return null;
             } else if (!isRight) {
-                startAction.writeLine("Правило №" + rule + " было ЛОЖНО! [" + entry.getKey() + " != " + entry.getValue() + "]");
+                startAction.writeLine("Правило №" + rule + " ЛОЖНО! [" + entry.getKey() + " != " + entry.getValue() + "]");
                 res = false;
+                rule.isAnalyzed = true;
                 break;
             }
         }
         if (res) {
             context.put(rule.targetAttribute, new ContextValue(rule.targetValue, rule));
-            startAction.writeLine("Правило №" + rule + " было ИСТИННО! [" + rule.targetAttribute + " = " + rule.targetValue + "]");
+            startAction.writeLine("Правило №" + rule + " ИСТИННО! [" + rule.targetAttribute + " = " + rule.targetValue + "]");
+            rule.isAnalyzed = true;
             if (targets.empty()) {
                 isFinished = true;
             } else {
